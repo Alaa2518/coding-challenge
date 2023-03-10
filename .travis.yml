@@ -1,0 +1,6 @@
+language: php
+
+php: 
+_8.0.0
+cache: composer
+
