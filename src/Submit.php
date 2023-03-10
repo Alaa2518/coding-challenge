@@ -2,19 +2,19 @@
 
 namespace App;
 
-// include 'vendor/autoload.php';
 use App\FormValidation;
-// use FormValidation;
+
 use App\Hotels;
 use App\Search;
+use App\SortByName;
+use App\SortByPrice;
 
 
 class Submit{
     public function submit(){
         if (isset($_POST['submit'])) {
-            $validatation = new FormValidation;
+            $validatation = new FormValidation();
             
-
             $search = new Search();
             $HotelData = new Hotels();
             $hotels = $HotelData->getHotels(); //  return array of hotels 
@@ -27,6 +27,15 @@ class Submit{
 
                 // search with valide search 
                 $hotels = $search->valideSearch($validatation, $hotels);
+
+                if ($_POST['sort']==='sortByPrice'){
+                    $sort = new SortByPrice($hotels); // sort by price 
+                    $hotels = $sort->sort();
+                }else if ($_POST['sort'] === 'sortByName'){
+                    $sort = new SortByName($hotels); // sort by name 
+                    $hotels = $sort->sort();
+                }
+
 
                 header('http://localhost/index.php?hotels=' . urlencode(base64_encode(json_encode($hotels))));
             } else {

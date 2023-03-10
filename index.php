@@ -1,25 +1,19 @@
 <?php
 include 'vendor/autoload.php';
 use App\Hotels;
-use App\SortByName;
-use App\SortByPrice;
 
 
 
 
 $HotelData = new Hotels(); 
 $hotels = $HotelData->getHotels(); 
-$sort = new SortByName($hotels);// sort by name 
-$hotels = $sort->sort(); 
-
 
 $errors ;
 
 if (isset($_GET['hotels'])) {
   
   $hotels = json_decode(base64_decode(urldecode($_GET["hotels"])));
-  $sort = new SortByPrice($hotels); // sort by price 
-  $hotels = $sort->sort();
+  
 } else if(isset($_GET['error'])){
       $errors = 'your Search Not valide You should Enter At lest one Filed try again.';
 }
@@ -74,6 +68,16 @@ if (isset($_GET['hotels'])) {
                     <li><input type="text" class="form-control mb-2 mr-sm-2" name="destination" id="destination" placeholder="Search By Destination" /></li>
                     <li><input type="date" class="form-control mb-2 mr-sm-2" name="from" id="form" placeholder="Search By Start Date" /></li>
                     <li><input type="date" class="form-control mb-2 mr-sm-2" name="to" id="to" placeholder="Search By End Date" /></li>
+                    <li><div class=" mb-1 mr-sm-1">
+                        <input type="radio"  name="sort" id="sortByName" value="sortByName"  checked />
+                        <label class="form-check-label " for="sortByName">Name</label><br>
+
+                        <input type="radio"  name="sort" id="sortByPrice" value="sortByPrice"  />
+                        <label class="form-check-label" for="sortByPrice">Price </label>
+                
+                        </div>
+                    </li>
+                    
                     
                     <li><button type="submit" class="btn btn-outline-primary mb-2" name="submit" value="Register">Search</button> 
                     
@@ -101,7 +105,7 @@ if (isset($_GET['hotels'])) {
     <section id="resume" class="resume">
       
 
-      <div class="container" data-aos="fade-up">
+      <div class="container" >
         
         <?php if (isset($errors)) { ?>
           
@@ -113,10 +117,10 @@ if (isset($_GET['hotels'])) {
             </button>
           </div>
         <?php } ?>
-      </div>
+      
         <div class="section-title">
           <h2>Hotels Data</h2>
-          <p>All Hotels sorted by name </p>
+          <p>You Can Sort Search Hotels Data by Name or By Price, If you want search by Price with this range [$100:$200], Name of Hotel, Data Availabil, or City. You can eny type of them.  </p>
         </div>
         
         <div class="row">
@@ -144,7 +148,7 @@ if (isset($_GET['hotels'])) {
           
           
         </div>
-
+                  
       </div>
     </section><!-- End Resume Section -->
 
