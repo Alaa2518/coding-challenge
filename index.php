@@ -1,19 +1,22 @@
 <?php
+include 'vendor/autoload.php';
+use App\Hotels;
+use App\SortByName;
+use App\SortByPrice;
 
-include_once 'sort.php';
-include_once 'hotels.php';
 
 
 
 $HotelData = new Hotels(); 
 $hotels = $HotelData->getHotels(); 
 $sort = new SortByName($hotels);// sort by name 
-
 $hotels = $sort->sort(); 
+
 
 $errors ;
 
 if (isset($_GET['hotels'])) {
+  
   $hotels = json_decode(base64_decode(urldecode($_GET["hotels"])));
   $sort = new SortByPrice($hotels); // sort by price 
   $hotels = $sort->sort();
@@ -35,16 +38,16 @@ if (isset($_GET['hotels'])) {
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="src/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="src/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="src/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="src/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="src/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="src/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   
 
   <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="src/assets/css/style.css" rel="stylesheet">
 
   
 </head>
@@ -62,7 +65,7 @@ if (isset($_GET['hotels'])) {
       <nav id="navbar" class="navbar order-last order-lg-0">
         
             
-            <form  action="submit.php" method="POST">
+            <form  action="src/Submit.php" method="POST">
                 
                 <ul>
                     
@@ -91,13 +94,17 @@ if (isset($_GET['hotels'])) {
 
   </header><!-- End Header -->
 
-
   <main id="main">
- 
+
+
     <!-- ======= Resume Section ======= -->
     <section id="resume" class="resume">
+      
+
       <div class="container" data-aos="fade-up">
+        
         <?php if (isset($errors)) { ?>
+          
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Erros In Your Search</strong>
             <?php echo $errors; ?>
@@ -106,6 +113,7 @@ if (isset($_GET['hotels'])) {
             </button>
           </div>
         <?php } ?>
+      </div>
         <div class="section-title">
           <h2>Hotels Data</h2>
           <p>All Hotels sorted by name </p>
@@ -113,7 +121,9 @@ if (isset($_GET['hotels'])) {
         
         <div class="row">
           <div class="col-lg-6">
+            
             <?php foreach($hotels as $hotel){  ?>
+
             <h3 class="resume-title"><?php echo $hotel->name; ?></h3>
             <div class="resume-item pb-0">
               <h4><?php echo  $hotel->city; ?></h4>
@@ -154,17 +164,17 @@ if (isset($_GET['hotels'])) {
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="src/src/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="src/src/assets/vendor/aos/aos.js"></script>
+  <script src="src/src/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="src/src/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="src/src/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="src/src/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="src/src/assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="src/src/assets/vendor/php-email-form/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="src/assets/js/main.js"></script>
 
 </body>
 
