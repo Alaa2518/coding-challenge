@@ -39,7 +39,7 @@ Open Terminal write this command
 
 To login as super Admin 
 Travis CI
-```(https://app.travis-ci.com/Alaa2518/coding-challenge.svg?branch=main) ```
+```(https://codeclimate.com/webhooks) ```
 Code LImate
 ```https://codeclimate.com/github/Alaa2518/coding-challenge ```
 
