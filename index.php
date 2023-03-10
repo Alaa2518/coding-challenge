@@ -1,69 +1,24 @@
 <?php
-include_once 'linearSearch.php';
-include_once 'search.php';
+
 include_once 'sort.php';
-include_once 'main.php';
+include_once 'hotels.php';
 
 
-$HotelData = new HotelsData();
-$hotels = $HotelData->getAllHotelsData();
-$sort = new SortByPrice($HotelData);
 
-$hotels = $sort->sort();
+$HotelData = new Hotels(); 
+$hotels = $HotelData->getHotels(); 
+$sort = new SortByName($hotels);// sort by name 
 
+$hotels = $sort->sort(); 
 
-if (isset($_POST['submit'])) {
+$errors ;
 
-  $error_fields[] = array();
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!(isset($_POST['name']) && !empty($_POST['name']))) {
-      $error_fields[] = 'name';
-    }
-    if (!(isset($_POST['price']) && !empty(trim($_POST['price'])))) {
-      $error_fields[] = 'price';
-    }
-    if (!(isset($_POST['from']) && !empty($_POST['from']) && isset($_POST['to']) && !empty($_POST['to']))) {
-      $error_fields[] = 'date';
-    }
-    if (!(isset($_POST['destination']) && !empty($_POST['destination']))) {
-      $error_fields[] = 'destination';
-    }
-  }
-  if (
-    !in_array('name', $error_fields) ||
-    !in_array('price', $error_fields) ||
-    !in_array('date', $error_fields) ||
-    !in_array('destination', $error_fields)
-  ) {
-
-    $name = cleanStr($_POST['name']);
-    $price = cleanPrice($_POST['price']);
-    $dateFrom = cleanDate($_POST['from']);
-    $dateTo = cleanDate($_POST['to']);
-    $destination = cleanStr($_POST['destination']);
-    echo $name;
-    $search = new Search();
-
-    $hotels = $search->shearchByDate($hotels,$dateFrom, $dateTo);
-
-
-  } else {
-    if (
-      in_array('name', $error_fields) ||
-      in_array('price', $error_fields) ||
-      in_array('date', $error_fields) ||
-      in_array('destination', $error_fields)
-    )
-      echo
-        '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-            </div>';
-
-  }
-
+if (isset($_GET['hotels'])) {
+  $hotels = json_decode(base64_decode(urldecode($_GET["hotels"])));
+  $sort = new SortByPrice($hotels); // sort by price 
+  $hotels = $sort->sort();
+} else if(isset($_GET['error'])){
+      $errors = 'your Search Not valide You should Enter At lest one Filed try again.';
 }
 
 ?>
@@ -107,7 +62,7 @@ if (isset($_POST['submit'])) {
       <nav id="navbar" class="navbar order-last order-lg-0">
         
             
-            <form  action="index.php" method="POST">
+            <form  action="submit.php" method="POST">
                 
                 <ul>
                     
@@ -138,16 +93,24 @@ if (isset($_POST['submit'])) {
 
 
   <main id="main">
-
+ 
     <!-- ======= Resume Section ======= -->
     <section id="resume" class="resume">
       <div class="container" data-aos="fade-up">
-
+        <?php if (isset($errors)) { ?>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Erros In Your Search</strong>
+            <?php echo $errors; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <?php } ?>
         <div class="section-title">
           <h2>Hotels Data</h2>
           <p>All Hotels sorted by name </p>
         </div>
-
+        
         <div class="row">
           <div class="col-lg-6">
             <?php foreach($hotels as $hotel){  ?>

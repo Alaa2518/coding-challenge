@@ -1,52 +1,90 @@
 <?php
 
-// include_once 'main.php';
+include_once 'formValidation.php'; 
 
-// include_once 'linearSearch.php';
+class Search{
+	private $result ;
+
+	function __construct(){
+		$this->result =array() ;
+	}
+
+	// function search by name or By city 
+	public function search(array $hotels , string $valueToSearch, $key){ 
+		foreach ($hotels as $hotel ) {
+			if (preg_match("/\b$valueToSearch\b/i", $hotel->$key)) {
+				array_push($this->result, $hotel);
+			}
+		}
+		return $this->result ;
+	}
 
 
-// $HotelData = new HotelsData();
+	// function search By price tack two values min Price and max Price 
+	public function searchByPrice(array $hotels,float $minPirce,float $maxPrice ){
 
-// $hotels = $HotelData->getAllHotelsData();
-function cleanStr($string)
-{
+		foreach ($hotels as $hotel) {
+			if( (float)$hotel->price >=$minPirce && (float)$hotel->price <= $maxPrice){
+				array_push($this->result, $hotel);
+			}
+		}
+		return $this->result; // return search arrey  with values 
+	}
     
-    // Removes special chars.
-    $string = preg_replace('/[^A-Za-z0-9\s]/', ' ', $string);
-    // Replaces multiple hyphens with single one.
-    $string = preg_replace('/-+/', '-', $string);
-    // delet spaces if eny . 
-    $string = trim($string);
+	// search By date Availbaile on the time from date user want to another date 
+	public function searchByDate(array $hotels, $from, $to)
+	{
+		$format = "d-m-Y";
+		$rangeDate = false ;
+		foreach ($hotels as $hotel) {
+			foreach($hotel->availability as $availabile){
+				if (DateTime::createFromFormat($format,$availabile->from) >= DateTime::createFromFormat($format, $from) &&
+						DateTime::createFromFormat($format,$availabile->to) <= DateTime::createFromFormat($format, $to) ){
+						
+						$rangeDate = true;
+				}
+			}
+			if ($rangeDate){
+				array_push($this->result,$hotel);
+				$rangeDate = false;
+			}
+		}
+		return $this->result;  // result array have the search reasult 
+	}
 
-    return $string;
+	// this function choice all valide search the user used return all hotels on the search
+	public function valideSearch(FormValidation $validatation,array $hotels){
+
+		$Hotels = $hotels;
+
+		$name = $validatation->cleanStr($_POST['name']);
+		$price = $validatation->cleanPrice($_POST['price']);
+		$dateFrom = $validatation->cleanDate($_POST['from']);
+		$dateTo = $validatation->cleanDate($_POST['to']);
+		$destination = $validatation->cleanStr($_POST['destination']);
+
+		if ( ! in_array('name',$validatation->get_errors())){
+			
+			$Hotels = $this->search($Hotels,$name,'name');
+		}if (!in_array('price', $validatation->get_errors()) ){
+			
+			$Hotels = $this->searchByPrice($Hotels,(float)$price[0], (float) $price[1]);
+
+		}if(!in_array('date', $validatation->get_errors())){
+			
+			$Hotels = $this->searchByDate($Hotels,$dateFrom,$dateTo );
+
+		}if(!in_array('destination', $validatation->get_errors())){
+			
+			$Hotels = $this->search($Hotels, $destination, 'city');
+		}
+		return $Hotels;
+
+	}
+
+
 }
 
-// chage date format 
-function cleanDate($date)
-{    
-    return date("d-m-Y", strtotime($date));
-}
-
-// this fuinction match this $100:$500 input and  returen the max price and min price 
-function cleanPrice($string)
-{
-
-    if (preg_match('/^\$[0-9]+:\$[0-9]+$/', $string)){
-        // Removes special chars.
-        $string = preg_replace('/[^0-9\s:]/','', $string);
-        list($minPrice, $maxPrice) = explode(":", $string);
-        if ((float) $maxPrice < (float) $minPrice){
-            $price = array($maxPrice, $minPrice);
-            return $price;
-        }
-        $price =array($minPrice,$maxPrice); 
-        return $price;
-    }
-    return "not match";
-    
-}
-// print_r($_POST['submit']);
 
 
 ?>
-

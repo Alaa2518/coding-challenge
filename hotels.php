@@ -1,29 +1,7 @@
 <?php
 
-// $api_url = 'https://api.npoint.io/dd85ed11b9d8646c5709';
 
-// Print data if need to debug
-// print_r($hotel_data);
-
-// Traverse array and display hotel data
-// foreach ($hotel_data as $hotel) {
-// 	echo "name: " . $hotel->name;
-// 	echo "<br />";
-//     echo "price: " . $hotel->price;
-//     echo "<br />";
-//     echo "city: " . $hotel->city;
-//     echo "<br />";
-//     foreach($hotel->availability as $availability){
-//         echo "from: " . $availability->from;
-//         echo " :to: " . $availability->to ;
-//         echo "<br/>";
-//     }
-// 	echo "<br /> <br />";
-// }
-
-
-
-class HotelsData{
+class Hotels{
     const API_URL = 'https://api.npoint.io/dd85ed11b9d8646c5709';
     private $json_data ;
     private $response_data;
@@ -37,11 +15,11 @@ class HotelsData{
         $this->hotel_data = $this->response_data->hotels;
     }
     
-    public function getAllHotelsData(){
+    public function getHotels(){
         return $this->hotel_data;
     }
 
-    public function getHotalName()
+    public function getHotelsName()
     {
         $names = array();
 
@@ -52,7 +30,7 @@ class HotelsData{
         return $names;
     }
 
-    public function getPrice()
+    public function getHotelsPrice()
     {
         $prices = array();
 
@@ -64,7 +42,7 @@ class HotelsData{
         return $prices;
     }
 
-    public function getDestination()
+    public function getHotelsCity()
     {
         $cities = array();
 
