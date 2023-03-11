@@ -4,3 +4,17 @@ php:
 _8.0.0
 cache: composer
 
+install:
+    - composer require symfony/framework-bundle:${SYMFONY_VERSION}
+
+script:
+  -composer install
+  -composer run
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITUB_TOKEN
+  on:
+    branch: master
+

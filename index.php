@@ -1,22 +1,33 @@
 <?php
 include 'vendor/autoload.php';
 use App\Hotels;
+use App\Submit;
 
 
 
 
 $HotelData = new Hotels(); 
-$hotels = $HotelData->getHotels(); 
+$hotels = $HotelData->getHotels();
+$errors;
+if (isset($_POST['submit'])) {
+$submit = new Submit();
+$hotels = $submit->submit();
+if (! $hotels){
+  $errors = 'Not Found Search ';
+  $hotels = $HotelData->getHotels();
 
-$errors ;
+  }
 
-if (isset($_GET['hotels'])) {
-  
-  $hotels = json_decode(base64_decode(urldecode($_GET["hotels"])));
-  
-} else if(isset($_GET['error'])){
-      $errors = 'your Search Not valide You should Enter At lest one Filed try again.';
 }
+
+
+// if (isset($_GET['hotels'])) {
+  
+//   $hotels = json_decode(base64_decode(urldecode($_GET["hotels"])));
+  
+// } else if(isset($_GET['error'])){
+//       $errors = 'your Search Not valide You should Enter At lest one Filed try again.';
+// }
 
 ?>
 
@@ -59,7 +70,7 @@ if (isset($_GET['hotels'])) {
       <nav id="navbar" class="navbar order-last order-lg-0">
         
             
-            <form  action="src/Submit.php" method="POST">
+            <form  action="index.php" method="POST">
                 
                 <ul>
                     

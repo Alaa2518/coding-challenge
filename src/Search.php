@@ -1,8 +1,4 @@
 <?php
-
-// include_once 'formValidation.php';
-
-
 namespace App;
 
 
@@ -92,5 +88,3 @@ class Search{
 }
 
 
-
-?>

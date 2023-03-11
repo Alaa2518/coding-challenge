@@ -1,9 +1,7 @@
 <?php
-
 namespace App;
 
 use App\FormValidation;
-
 use App\Hotels;
 use App\Search;
 use App\SortByName;
@@ -45,12 +43,12 @@ class Submit{
                     $hotels = $sort->sort();
                 }
 
-
-                header('http://localhost/index.php?hotels=' . urlencode(base64_encode(json_encode($hotels))));
+                return $hotels;
+                // header('http://localhost/index.php?hotels=' . urlencode(base64_encode(json_encode($hotels))));
             } else {
                 if ($this->validatation->checkError())
-
-                    header('http://localhost/index.php?error=enter valide search');
+                    return false;
+                    // header('http://localhost/index.php?error=enter valide search');
 
             }
 
@@ -60,9 +58,7 @@ class Submit{
 }
 
 
-$submit = new Submit();
-$submit->submit();
+// $submit = new Submit();
+// $submit->submit();
 
 
-
-?>
